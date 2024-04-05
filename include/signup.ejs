@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%-include('./partial/head.ejs')%> 
+<body>
+    <div class="decrease">
+        <%-include('./partial/nave.ejs')%> 
+        <main>
+            <div class="signup">
+                <div class="signup-form">
+                    <div class="signup-detail">
+                        <p>Have you ever have an account<span><a href="">Login</a></span></p>  
+                    </div>
+                    <div class="signup-info">
+            
+                        
+                        <form  action="/signup" method="POST">
+                            <fieldset>
+                                <p style="color:red"><%=message%></p>
+                                <p style="color:red"><%=signup%></p>
+                                <legend>SignUp credential</legend>
+                                <label for="firstName">firstName</label><input type="text" required name="firstName">
+                                <label for="secondName">secondName</label><input type="text" required  name="secondName">
+                                <label for="email">Email</label><input type="email" required name="email">
+                                <label for="password">Password</label><input type="password" required name="password">
+                               
+                               <button>Submit</button>
+                                <!-- Other form fields -->
+                              </fieldset>
+                        </form> 
+                        
+                         
+                </div> 
+                </div>
+            </div>
+       
+        </main>
+        <%-include('./partial/footer.ejs')%> 
+    </div>
+   
+</body>
+</html>

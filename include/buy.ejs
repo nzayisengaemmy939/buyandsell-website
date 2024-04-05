@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<%-include('./partial/head')%>
+<body> 
+    <div class="decrease">
+        <%-include('./partial/nave')%>
+        <main>
+            
+        <div class="buy-product">
+           <div class="image">
+               <img src="/<%=Seller.file %>">
+           </div>
+           <div class="description">
+            <div class="description-seller">
+              <h3>About Seller information and cost of product</h3>
+        
+              <p><span>First NAME:</span>   <%=Seller.firstName%></p>
+              <p><span>Second Name:</span>  <%=Seller.secondName%></p>
+              <p><span><i class="bi bi-envelope icon1"></i></span>:  <%=Seller.email%></p>
+              <p><span>Cost of Product</span></p>
+
+              <p><span><i class="bi bi-telephone-forward icon2"></i></span>: <%=Seller.phone%></p>
+              <p><span>Description</span>  :<%=Seller.description%></p>
+              <p>If you want to talk with him/her by Whatsap:<a href=""><i class="bi bi-whatsapp icon3"></i></a></p>
+            </div>
+           </div>
+   
+        </div> 
+       <%-include('./partial/footer')%>
+    </div>
+        </main>
+        
+    
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%-include('./partial/head.ejs')%> 
+<body>
+    <div class="decrease">
+        <%-include('./partial/nave.ejs')%>
+        <div class="seller-form">
+            <div class="form-info">
+                <form action="/sell" method="post"  enctype="multipart/form-data">
+                    <fieldset>
+                        <legend>Seller Information</legend>
+                        <div>
+                            <div>
+                                <label for="firstName">firstName</label><input type="text" required name="firstName">
+                                <label for="secondName">secondName</label><input type="text" required name="secondName">
+                                <label for="email">Email</label><input type="email" required name="email">
+                                <label for="phone">Phone number</label><input type="number" placeholder="Whatsap number" required name="phone">
+                                <label for="password">Password</label><input type="password" required name="password">
+                                </div>
+                                <div>
+                                <label for="username">Username</label><input type="text" name="username">
+                                <label for="price">Price</label><input type="number" placeholder="price" required name="price">
+                                <label for="nameofclothes">Name of clothes</label><input type="text" name="nameCloth">
+                                <label for="description">Description of your product</label><input type="text" name="description">
+                                <label for="file">Your Clothes should be image:</label><input type="file" name="file">
+                                <!-- Other form fields -->
+                                </div>
+                                <button>Submit</button>
+                            </div>
+                      </fieldset> 
+                </form>
+                </div>
+        </div>
+        <%-include('./partial/footer.ejs')%> 
+    </div>
+    
+</body>
+</html>

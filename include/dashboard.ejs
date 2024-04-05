@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%-include('./partial/head')%>
+<body>
+     <nav class="dashboard-menu">
+    <ul>
+        <li><button><a href="/">Home</a></button></li>
+        <li><button><a href="/sell">CreateNewProduct</a></button></li>
+        <li><button><a href="/Logout">Logout</a></button></li>
+        <li><img src="wifi.svg" class="light"></li>
+    </ul>
+     </nav>
+    <main>
+        <div class="dashboard">
+             <h3>Hello <span><% products.secondName %></span> all your product is Here</h3>
+            <div class="dashboard-item">
+            <% products.forEach((item) => { %>
+                <img src="/<%= item.file %>">
+                <a data-doc="<%=item._id%>" class="delete"><i class="bi bi-trash3"></i></a>
+            <% }) %>
+            <div>
+        </div>
+    </main>
+    
+    <script>
+        const light=document.querySelector('.light');
+
+        const body=document.body;
+light.addEventListener('click',()=>{
+    body.classList.toggle('dark-mode');
+    body.classList.toggle('light-mode'); 
+})
+const deleteBtn = document.querySelectorAll('a.delete'); // Use querySelectorAll instead of querySelector
+
+deleteBtn.forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+        const id = btn.getAttribute('data-doc'); // Retrieve the ID from data-doc attribute
+        const endpoint = `/delete/${id}`; // Construct the endpoint URL
+        
+        await fetch(endpoint, { method: 'DELETE' })
+            .then(response => response.json())
+            .then(data => window.location.href = data.redirect) // Use window.location.href for redirection
+            .catch(err => {
+                console.error(err);
+            });
+    });
+});
+
+
+    </script>
+    
+</body>
+</html>

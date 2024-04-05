@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partial/head') %>
+<body>
+    <div class="decrease">
+        <%- include('./partial/nave') %>
+        <h1>Images Uploaded by <%= username %></h1>
+        <div class="all-product">
+            <div >
+                <% files.forEach(image => { %>
+                    <img src="/<%= image %>" alt="Image">
+                <% }); %>
+            </div>
+        </div>
+      
+        <%- include('./partial/footer') %>
+    </div>
+   
+</body>
+</html>

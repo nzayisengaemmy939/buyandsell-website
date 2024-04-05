@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<%-include('./partial/head')%>;
+<body>
+    <div class="decrease">
+    <%-include('./partial/nave')%>;
+
+    <div class="contacts">
+        <form action="/suggestion" method="post">
+            <input type="text" name="name" placeholder="your full name" required>
+                <input type="text" name="email" placeholder="Your Email" required>
+                    <textarea name="suggestion" placeholder="Type what you need or suggestion"></textarea><br>
+                    <button>Send</button>
+
+        </form>
+
+    </div>
+
+ </div> 
+ <%-include('./partial/footer')%>;  
+</body>
+</html>

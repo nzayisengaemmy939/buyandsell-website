@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./partial/head')%>
+<body>
+    <div class="admin-dashboard">
+     <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li class="get-data">sevice</li>
+            <li class="get-contacts">contacts</li>
+            <li class="get-users">Users</li>
+            <li class="get-sellers">Sellers</li>
+            <li><a href="/sell">Create</a></li>
+            <li><a href="/Logout">Logout</a></li>
+
+        </ul>
+     </nav>
+     <div class="data">
+
+
+     </div>
+    </div>
+    <script>
+   const getUsers = document.querySelector('.get-users');
+   const getSelles=document.querySelector('.get-sellers');
+   const getContacts=document.querySelector('.get-contacts');
+const data = document.querySelector('.data');
+
+getUsers.addEventListener('click', async (e) => {
+    try {
+        const response = await fetch('/users');
+        const users = await response.json();
+
+        // Toggle visibility of the data container
+        data.style.display = data.style.display === 'none' ? 'block' : 'none';
+
+        // Render user data if the container is visible
+        if (data.style.display !== 'none') {
+            data.innerHTML = ''; // Clear previous data
+            users.forEach(user => {
+                const div = document.createElement('div');
+                const button = document.createElement('button');
+                button.classList = 'delete-user';
+                button.textContent = 'DELETE';
+                
+                // Attach event listener to delete button
+                button.addEventListener('click', async () => {
+                    try {
+                        // Send a request to delete the user
+                        const deleteUser = await fetch(`/users/${user._id}`, {
+                            method: 'DELETE'
+                        });
+                        const deleteResponse = await deleteUser.json();
+                        if (deleteResponse.message === "User deleted successfully") {
+                            // Remove the user's div from the DOM
+                            div.remove();
+                        } else {
+                            console.error('Failed to delete user');
+                        }
+                    } catch (error) {
+                        console.error(error);
+                    }
+                });
+
+                div.classList = 'user';
+                div.innerHTML = `<p><span>${user.firstName}</span><span>${user.secondName}</span><p>${user.email}</p></p>`;
+                div.appendChild(button); // Append delete button to user div
+                data.appendChild(div);
+            });
+        }
+    } catch (error) {
+        console.error(error);
+    }
+});
+getSelles.addEventListener('click', async (e) => {
+    try {
+        const response = await fetch('/sellers');
+        const sellers = await response.json();
+
+        // Toggle visibility of the data container
+        data.style.display = data.style.display === 'none' ? 'block' : 'none';
+
+        // Render user data if the container is visible
+        if (data.style.display !== 'none') {
+            data.innerHTML = ''; // Clear previous data
+            sellers.forEach(seller => {
+                const div = document.createElement('div');
+                const button = document.createElement('button');
+                button.classList = 'delete-seller';
+                button.textContent = 'DELETE';
+                
+                // Attach event listener to delete button
+                button.addEventListener('click', async () => {
+    try {
+        const deleteSeller = await fetch(`/sellers/${seller._id}`, {
+            method: 'DELETE'
+        });
+        if (deleteSeller.ok) {
+            // Remove the seller's div from the DOM
+            div.remove();
+        } else {
+            // Handle non-OK response
+            console.error('Failed to delete seller:', deleteSeller.statusText);
+        }
+    } catch (error) {
+        console.error(error);
+    }
+});
+
+
+                div.classList = 'seller';
+                div.innerHTML = `<p><span>${seller.firstName}</span><span>${seller.secondName}</span></p><p>${seller.email}</p><p>${seller.price}</p>
+                <p><img src="/${seller.file}" alt="Seller Image"></p>`;
+                div.appendChild(button); // Append delete button to user div
+                data.appendChild(div);
+            });
+        }
+    } catch (error) {
+        console.error(error);
+    }
+});
+
+
+
+
+getContacts.addEventListener('click', async (e) => {
+    try {
+        const response = await fetch('/contacts');
+        const data1 = await response.json();
+        const contacts = data1.contact;
+
+        // Toggle visibility of the data container
+        data.style.display = data.style.display === 'none' ? 'block' : 'none';
+
+        // Render user data if the container is visible
+        if (data.style.display !== 'none') {
+            data.innerHTML = ''; // Clear previous data
+            contacts.forEach(contact => {
+                const div = document.createElement('div');
+                const button = document.createElement('button');
+                button.classList = 'delete-user';
+                button.textContent = 'DELETE';
+                
+                // Attach event listener to delete button
+                button.addEventListener('click', async () => {
+                    try {
+                        // Send a request to delete the contact
+                        const deleteContact = await fetch(`/contacts/${contact._id}`, {
+                            method: 'DELETE'
+                        });
+                        if (deleteContact.ok) {
+                            // Remove the contact's div from the DOM
+                            div.remove();
+                        } else {
+                            console.error('Failed to delete contact');
+                        }
+                    } catch (error) {
+                        console.error(error);
+                    }
+                });
+
+                div.classList = 'user';
+                div.innerHTML = `<p><span>${contact.name}</span><span>${contact.email}</span><p>${contact.suggestion}</p></p>`;
+                div.appendChild(button); // Append delete button to contact div
+                data.appendChild(div);
+            });
+        }
+    } catch (error) {
+        console.error(error);
+    }
+});
+
+
+
+
+    </script>
+</body>
+</html>

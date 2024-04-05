@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<%-include('./partial/head.ejs')%>
+<html lang="en">
+<body class="body">
+    <!-- starting of header-->
+    <div class="decrease"><!---decrese size of nav and footer-->
+    <header id="#">
+        <%-include('./partial/nave.ejs')%> 
+    
+    </header>
+
+    <!-------------------------about body------------------------->
+    <main>
+    <div class="main">
+        <div class="one">
+          <input type="search" placeholder="search" class="search">
+          <a href="/logout"><i class="bi bi-box-arrow-left icon2"></i></a>
+          <a href="/dashboard"><i class="bi bi-person icon2"></i></a>
+         
+          <div class="about-comment">
+            <form id="minds-form">
+                <textarea id="floatingTextarea2" placeholder="Add a comment"></textarea>
+                <button type="submit">MakeComment</button>
+            </form>
+          <div class="minds">
+
+          </div>
+            
+          </div>
+        </div>
+        <div class="two">
+            <div class="image">
+              <% Seller.forEach(sell => { %>
+                <div class="seller-item">
+                 <section>
+                    <ul>
+                        <li> <p>Sold by:<span><%= sell.firstName %></span></p></li>
+                        <li><a href="/buy/<%=sell._id%>">Buy</a></li>
+                        <li><a href="/detail/<%=sell._id %>">Detail</a></li>
+                        
+                    </ul>
+                 </section>   
+                
+                  <img src="<%= sell.file %>" alt="Image">
+                    <p style="color: white; text-align: center;">Uploaded by:<span><a href="/allProductUser/<%=sell.username%>"><%= sell.username %></a></span></p>
+                </div>
+                
+              <% }); %>
+
+    
+            </div>
+          </div>
+        <div class="three"></div>
+    </main>
+    
+   <%-include('./partial/footer.ejs')%>
+    </div>
+   <script>
+    
+const search=document.querySelector('.search');
+function toggleDisplay(){
+    if(search.style.display==="none"){
+    search.style.display="block";
+}
+else{
+    search.style.display="none";
+}}
+const light=document.querySelector('.light');
+
+const body=document.querySelector('.decrease');
+light.addEventListener('click',()=>{
+    body.classList.toggle('dark-mode');
+    body.classList.toggle('light-mode'); 
+})
+
+
+/*...........................about clone........................*/
+
+
+    const imageWrapper = document.querySelector('.seller-item img');
+    imageWrapper.addEventListener('click', () => {
+    const sellerItems = document.querySelectorAll('.two .seller-item');
+
+    sellerItems.forEach(item => {
+        item.addEventListener('click', (event) => {
+            const clickedItem = event.currentTarget;
+            const clone = clickedItem.cloneNode(true);
+
+
+
+            // Remove event listener from cloned item
+            clone.removeEventListener('click', () => {});
+            clickedItem.querySelector('img').style.width = '100%';
+            clickedItem.querySelector('img').style.height = '600px';
+            // Append the clicked item to the .two div (to keep it)
+            const ulContainer = clickedItem.querySelector('.seller-item section');
+            ulContainer.style.display = ulContainer.style.display === 'none' ? 'none' : 'block';
+            document.querySelector('.two').appendChild(clickedItem);
+
+            // Move other items from .two to .three div
+            const otherItems = document.querySelectorAll('.two .seller-item');
+            otherItems.forEach(otherItem => {
+                if (otherItem !== clickedItem) {
+                    otherItem.remove();
+                    document.querySelector('.three').appendChild(otherItem);
+                }
+            });
+
+            document.querySelector('.two').style.flexBasis = '50';
+        });
+    });
+});
+async function fetchMinds() {
+    const response = await fetch('/minds');
+    const data = await response.json();
+    const minds = data; // Access the minds array from the response object
+    const mindsContainer = document.querySelector('.minds');
+    if (!mindsContainer) {
+        console.error('Minds container not found');
+        return;
+    }
+  
+    minds.forEach(mind => {
+        const mindsElement = document.createElement('div');
+        mindsElement.classList.add('minds-people');
+        console.log("your mind",mind.text)
+
+        function formatRelativeTime(date){
+            const now = new Date();
+            const diff = now - date;
+            const seconds = Math.floor(diff / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const hours = Math.floor(minutes / 60);
+            const days = Math.floor(hours / 24);
+            if (days > 0) {
+                return days === 1 ? '1 day ago' : `${days} days ago`;
+            } else if (hours > 0) {
+                return hours === 1 ? '1 hour ago' : `${hours} hours ago`;
+            } else if (minutes > 0) {
+                return minutes === 1 ? '1 minute ago' : `${minutes} minutes ago`;
+            } else {
+                return seconds <= 1 ? 'just now' : `${seconds} seconds ago`;
+            }
+        }
+
+        mindsElement.innerHTML = `
+            <p>${mind.text}        <span class="mind-date">${formatRelativeTime(new Date(mind.date))}</span></p>`;
+        mindsContainer.appendChild(mindsElement);
+    });
+}
+
+document.getElementById('minds-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const minds_text = document.getElementById('floatingTextarea2').value;
+    const result = await fetch('/minds', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: minds_text })
+    });
+    if (result.ok) {
+        await fetchMinds();
+    } else {
+        console.error('Failed to add comment');
+    }
+    document.getElementById('floatingTextarea2').value = "";
+});
+
+fetchMinds();
+
+
+   </script>  
+</body>
+</html>
